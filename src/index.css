@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+
+@theme {
+  /* we just redefined those three breakpoints
+  but did not replace all default break point */
+  /* --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 976px; */
+
+  --color-background: rgba(var(--background));
+  --color-orange-500: #ffa500;
+}
+
+
+/* Global transition for theme color changes */
+* {
+  @apply transition-colors duration-300;
+}
+
+:root {
+  --background: 242, 237, 208;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.light {
+  --background: 242, 237, 208;
+}
+
+.dark {
+  --background: 21, 21, 20;
+}
+
+.red {
+  --background: 225, 76, 76;
+}
