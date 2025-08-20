@@ -30,15 +30,16 @@ function App() {
   }, []);
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Employee</h1>
-      <div className="flex flex-wrap gap-4">
+    <div className="flex min-h-screen flex-col justify-start bg-gray-200 p-6">
+      <h1 className="mb-6 self-center text-3xl font-bold underline">
+        Employee
+      </h1>
+      <div className="flex flex-wrap justify-center gap-4">
         {employees.map((e) => (
-          // make card here
           <EmployeeCard key={e.id} employee={e} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
 
