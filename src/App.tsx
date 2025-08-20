@@ -34,6 +34,9 @@ function App() {
       <h1 className="mb-6 self-center text-3xl font-bold underline">
         Employee
       </h1>
+      <button className="mb-6 max-w-[130px] cursor-pointer self-end rounded bg-green-500 px-3 py-1 text-white hover:bg-green-600">
+        Add Employee
+      </button>
       <div className="flex flex-wrap justify-center gap-4">
         {employees.map((e) => (
           <EmployeeCard key={e.id} employee={e} />
