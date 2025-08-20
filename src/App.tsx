@@ -32,10 +32,12 @@ function App() {
   return (
     <>
       <h1 className="text-3xl font-bold underline">Employee</h1>
-      {employees.map((e) => (
-        // make card here
-        <EmployeeCard key={e.id} employee={e} />
-      ))}
+      <div className="flex flex-wrap gap-4">
+        {employees.map((e) => (
+          // make card here
+          <EmployeeCard key={e.id} employee={e} />
+        ))}
+      </div>
     </>
   );
 }
