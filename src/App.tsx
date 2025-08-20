@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Employee } from './types';
+import EmployeeCard from './components/EmployeeCard';
 
 function App() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -31,9 +32,9 @@ function App() {
   return (
     <>
       <h1 className="text-3xl font-bold underline">Employee</h1>
-      {employees.map((employee) => (
+      {employees.map((e) => (
         // make card here
-        <p key={employee.id}>{employee.firstName}</p>
+        <EmployeeCard key={e.id} employee={e} />
       ))}
     </>
   );
