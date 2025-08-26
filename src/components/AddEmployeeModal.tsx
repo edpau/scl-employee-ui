@@ -19,8 +19,28 @@ export default function AddEmployeeModal({ isOpen, onClose }: Props) {
   });
 
   const onSubmit = async (data: AddEmployeeFormData) => {
-    console.log(data);
-    onClose();
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const url = `${baseURL}/employees`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        alert(error.message || 'Failed to create employee.');
+        return;
+      }
+
+      onClose();
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      alert('Something went wrong. Please try again.');
+    }
   };
 
   return (
