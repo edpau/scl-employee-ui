@@ -1,4 +1,8 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AddEmployeeSchema } from '../types';
+import type { AddEmployeeFormData } from '../types';
 
 type Props = {
   isOpen: boolean;
@@ -6,6 +10,19 @@ type Props = {
 };
 
 export default function AddEmployeeModal({ isOpen, onClose }: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<AddEmployeeFormData>({
+    resolver: zodResolver(AddEmployeeSchema),
+  });
+
+  const onSubmit = async (data: AddEmployeeFormData) => {
+    console.log(data);
+    onClose();
+  };
+
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div
@@ -14,20 +31,81 @@ export default function AddEmployeeModal({ isOpen, onClose }: Props) {
       >
         <DialogPanel className="max-w-lg space-y-4 border bg-white p-12">
           <DialogTitle className="font-bold">Add Employees</DialogTitle>
-          <div className="flex gap-4">
-            <button
-              onClick={onClose}
-              className="cursor-pointer rounded bg-yellow-500 px-3 py-1 text-white hover:bg-yellow-600"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={onClose}
-              className="cursor-pointer rounded bg-green-500 px-3 py-1 text-white hover:bg-green-600"
-            >
-              Save
-            </button>
-          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <input
+                {...register('firstName')}
+                className="w-full rounded border p-2"
+                placeholder="First Name"
+              />
+              {errors.firstName && (
+                <p className="text-sm text-red-500">
+                  {errors.firstName.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <input
+                {...register('lastName')}
+                className="w-full rounded border p-2"
+                placeholder="Last Name"
+              />
+              {errors.lastName && (
+                <p className="text-sm text-red-500">
+                  {errors.lastName.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <input
+                {...register('email')}
+                className="w-full rounded border p-2"
+                placeholder="Email"
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
+            </div>
+            <div>
+              <input
+                {...register('mobileNumber')}
+                className="w-full rounded border p-2"
+                placeholder="Mobile Number"
+              />
+              {errors.mobileNumber && (
+                <p className="text-sm text-red-500">
+                  {errors.mobileNumber.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <input
+                {...register('address')}
+                className="w-full rounded border p-2"
+                placeholder="Address"
+              />
+              {errors.address && (
+                <p className="text-sm text-red-500">{errors.address.message}</p>
+              )}
+            </div>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={onClose}
+                className="cursor-pointer rounded bg-yellow-500 px-3 py-1 text-white hover:bg-yellow-600"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="cursor-pointer rounded bg-green-500 px-3 py-1 text-white hover:bg-green-600"
+              >
+                {isSubmitting ? 'Saving...' : 'Save'}
+              </button>
+            </div>
+          </form>
         </DialogPanel>
       </div>
     </Dialog>
