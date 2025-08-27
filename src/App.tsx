@@ -52,6 +52,7 @@ function App() {
       <AddEmployeeModal
         isOpen={isEmployeeModalOpen}
         onClose={() => setIsEmployeeModalOpen(false)}
+        fetchData={fetchData}
       />
     </div>
   );

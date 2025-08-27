@@ -7,9 +7,14 @@ import type { AddEmployeeFormData } from '../types';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  fetchData: () => void;
 };
 
-export default function AddEmployeeModal({ isOpen, onClose }: Props) {
+export default function AddEmployeeModal({
+  isOpen,
+  onClose,
+  fetchData,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -35,7 +40,7 @@ export default function AddEmployeeModal({ isOpen, onClose }: Props) {
         alert(error.message || 'Failed to create employee.');
         return;
       }
-
+      fetchData();
       onClose();
     } catch (err) {
       console.error('Unexpected error:', err);
