@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddEmployeeSchema } from '../types';
 import type { AddEmployeeFormData } from '../types';
+import { toastSuccess, toastError } from '../toastConfig';
 
 type Props = {
   isOpen: boolean;
@@ -37,14 +38,15 @@ export default function AddEmployeeModal({
 
       if (!response.ok) {
         const error = await response.json();
-        alert(error.message || 'Failed to create employee.');
+        toastError(error.message || 'Failed to create employee.');
         return;
       }
+      toastSuccess('Employee added successfully!');
       fetchData();
       onClose();
     } catch (err) {
       console.error('Unexpected error:', err);
-      alert('Something went wrong. Please try again.');
+      toastError('Something went wrong. Please try again.');
     }
   };
 

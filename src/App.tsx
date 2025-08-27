@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Employee } from './types';
 import EmployeeCard from './components/EmployeeCard';
 import AddEmployeeModal from './components/AddEmployeeModal';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -34,6 +35,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-200 p-6">
+      <Toaster position="top-center" />
       <div className="container mx-auto flex flex-col items-center justify-start">
         <h1 className="mb-6 text-3xl font-bold underline">Employee</h1>
         <button
