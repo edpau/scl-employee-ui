@@ -3,6 +3,7 @@ import type { Employee } from './types';
 import EmployeeCard from './components/EmployeeCard';
 import AddEmployeeModal from './components/AddEmployeeModal';
 import { Toaster } from 'react-hot-toast';
+import { toastError } from './toastConfig';
 
 function App() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -23,7 +24,7 @@ function App() {
       setEmployees(json);
     } catch (error) {
       console.error('Fetch error:', error);
-      alert('Failed to load employee data. Please try again later.');
+      toastError('Failed to load employee data. Please try again later.');
     }
   };
 
