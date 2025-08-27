@@ -17,10 +17,24 @@ function App() {
 
     try {
       const response = await fetch(url);
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          toastError('Employees not found (404).');
+        } else if (response.status === 500) {
+          toastError('Server error (500). Please try again later.');
+        } else {
+          toastError(`Unexpected error: ${response.status}`);
+        }
+        return;
+      }
+
       const json: Employee[] = await response.json();
+
       if (!Array.isArray(json)) {
         throw new Error('API did not return an array');
       }
+
       setEmployees(json);
     } catch (error) {
       console.error('Fetch error:', error);
