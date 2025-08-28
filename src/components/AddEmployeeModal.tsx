@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AddEmployeeSchema } from '../types';
 import type { AddEmployeeFormData } from '../types';
 import { toastSuccess, toastError } from '../toastConfig';
+import { useEffect } from 'react';
 
 type Props = {
   isOpen: boolean;
@@ -24,6 +25,10 @@ export default function AddEmployeeModal({
   } = useForm<AddEmployeeFormData>({
     resolver: zodResolver(AddEmployeeSchema),
   });
+
+  useEffect(() => {
+    if (!isOpen) reset();
+  }, [isOpen, reset]);
 
   const onSubmit = async (data: AddEmployeeFormData) => {
     const baseURL = import.meta.env.VITE_API_BASE_URL;
