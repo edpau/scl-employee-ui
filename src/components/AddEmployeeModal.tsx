@@ -19,6 +19,7 @@ export default function AddEmployeeModal({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<AddEmployeeFormData>({
     resolver: zodResolver(AddEmployeeSchema),
@@ -42,6 +43,7 @@ export default function AddEmployeeModal({
         return;
       }
       toastSuccess('Employee added successfully!');
+      reset();
       fetchData();
       onClose();
     } catch (err) {
