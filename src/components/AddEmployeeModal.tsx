@@ -21,6 +21,7 @@ export default function AddEmployeeModal({
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<AddEmployeeFormData>({
     resolver: zodResolver(AddEmployeeSchema),
@@ -44,7 +45,14 @@ export default function AddEmployeeModal({
 
       if (!response.ok) {
         const error = await response.json();
-        toastError(error.message || 'Failed to create employee.');
+        if (error.validation_errors?.email) {
+          setError('email', {
+            type: 'server',
+            message: error.validation_errors.email,
+          });
+        } else {
+          toastError(error.message || 'Failed to create employee.');
+        }
         return;
       }
       toastSuccess('Employee added successfully!');
