@@ -2,7 +2,7 @@ import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddEmployeeSchema } from '../types';
-import type { AddEmployeeFormData } from '../types';
+import type { AddEmployeeFormData, ErrorResponse } from '../types';
 import { toastSuccess, toastError } from '../toastConfig';
 import { useEffect } from 'react';
 
@@ -22,6 +22,7 @@ export default function AddEmployeeModal({
     handleSubmit,
     reset,
     setError,
+    setFocus,
     formState: { errors, isSubmitting },
   } = useForm<AddEmployeeFormData>({
     resolver: zodResolver(AddEmployeeSchema),
@@ -30,6 +31,17 @@ export default function AddEmployeeModal({
   useEffect(() => {
     if (!isOpen) reset();
   }, [isOpen, reset]);
+
+  async function safeParseJson(res: Response): Promise<ErrorResponse | null> {
+    const ctype = res.headers.get('content-type') || '';
+    if (!ctype.includes('application/json')) return null;
+    try {
+      const err = (await res.json()) as ErrorResponse;
+      return err;
+    } catch {
+      return null;
+    }
+  }
 
   const onSubmit = async (data: AddEmployeeFormData) => {
     const baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -44,15 +56,28 @@ export default function AddEmployeeModal({
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        if (error.validation_errors?.email) {
-          setError('email', {
-            type: 'server',
-            message: error.validation_errors.email,
+        const errJson = await safeParseJson(response);
+        console.log(errJson?.error);
+
+        if (errJson?.validation_errors) {
+          Object.entries(errJson.validation_errors).forEach(([field, msg]) => {
+            setError(field as keyof AddEmployeeFormData, {
+              type: 'server',
+              message: msg,
+            });
           });
-        } else {
-          toastError(error.message || 'Failed to create employee.');
+
+          const fields = Object.keys(
+            errJson.validation_errors,
+          ) as (keyof AddEmployeeFormData)[];
+
+          if (fields.length > 0) {
+            setFocus(fields[0]);
+          }
+          return;
         }
+
+        toastError(errJson?.error ?? 'Failed to create employee');
         return;
       }
       toastSuccess('Employee added successfully!');
