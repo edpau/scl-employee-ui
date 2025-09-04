@@ -99,7 +99,11 @@ export default function AddEmployeeModal({
         <DialogPanel className="max-w-lg space-y-4 border bg-white p-12">
           <DialogTitle className="font-bold">Add Employees</DialogTitle>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
             <div>
               <input
                 {...register('firstName')}
